@@ -1,0 +1,56 @@
+In Angular 2 a component can share data and information with another component by passing data or events.
+A component can be used inside another component, thus creating a component hierarchy. 
+The component being used inside another component is known as the child component and the enclosing component is known as the parent component.
+Components can communicate to each other in various ways, including:
+
+1.Using @Input()
+2.Using @Output()
+3.Using Services
+4.Parent component calling ViewChild
+5.Parent interacting with child using a local variable
+
+
+-> Parent listens for child event:
+The Child Component exposes an EventEmitter Property. This Property is adorned with the @Output decorator. When Child Component needs to communicate with the parent it raises the event. The Parent Component listens to that event and reacts to it.
+
+-> EventEmitter Property:
+To Raise an event, the component must declare an EventEmmitter Property. The Event can be emitted by calling the .emit() method
+
+-> @Output Decorator:
+Using the EventEmitter Property gives the components ability to raise an event. But to make that event accessible from parent component, you must decorate the property with @Output decorator
+
+-> Parent uses a @ViewChild() to get reference to the Child Component
+Injecting an instance of the child component into the parent as a @ViewChild is the another technique used by the parent to access the property and method of the child component
+
+The @ViewChild decorator takes the name of the component/directive as its input. It is then used to decorate a property. The Angular then injects the reference of the component to the Property
+
+For Example:
+
+In the Parent component, declare a property child which is of type ChildComponent
+
+child: ChildComponent;
+ 
+Next, decorate it with @ViewChild decorator passing it the name of the component to inject
+
+
+@ViewChild(ChildComponent) child: ChildComponent;
+ 
+Now, when angular creates the child component, the reference to the child component is assigned to the child property.
+
+We now update the code from previous section
+
+Child Component
+There is no change in the child component
+
+Parent Component
+In parent component, we need to import the viewChild annotation. We also need to import the child component
+
+
+import { Component, ViewChild } from '@angular/core';
+import { ChildComponent } from './child.component';
+ 
+Next, create a property child which is an instance of type ChildComponent. Apply the viewChild annotation on the child component as shown below
+
+
+   @ViewChild(ChildComponent) child: ChildComponent;
+

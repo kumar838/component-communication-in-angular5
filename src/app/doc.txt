@@ -1,0 +1,121 @@
+How to pass data from child component to parent component. 
+
+Component Input Property:
+
+1. In Part 33 of Angular CRUD tutorial we discussed how to pass data from parent component to child component.
+
+2. To pass data from parent component to child component we use input properties.
+
+3. In the child component we create a property with @Input decorator. 
+
+4. The parent component then binds to the child component's input property.
+
+Component Output Property :
+
+1. On the other hand, to pass data from child component to parent component we use output properties.
+
+2. The child component raises an event to pass data to the parent component. 
+
+3. To create and raise an event, we use EventEmitter object.
+
+4. So the output property is an event defined using EventEmitter object and decorated with @Output decorator.
+
+5. To specify the type of data that we want to pass from the child component to parent component we use the EventEmitter generic argument.
+
+In the example below, the notify event is used to pass string data from the child component to parent component. This event data is commonly called event payload.
+@Output() notify: EventEmitter&lt;string&gt; = new EventEmitter&lt;string&gt;();
+
+If you want to pass a number instead of a string as event data, then you specify the generic argument type as number instead of string.
+@Output() notify: EventEmitter&lt;number&gt; = new EventEmitter&lt;number&gt;(); 
+
+If you want to be able to pass any type of data, you can use 'any' as the generic argument type.
+@Output() notify: EventEmitter&lt;any&gt; = new EventEmitter&lt;any&gt;();
+
+You can only pass one value using EventEmitter. If you want to pass more than one value using EventEmitter use a custom type like Employee as the generic argument.
+@Output() notify: EventEmitter&lt;Employee&gt; = new EventEmitter&lt;Employee&gt;();
+
+               -------------------------------------*********------------------------------------
+
+interfaces:
+
+What is an Interface in TypeScript
+If you have experience with any object oriented oriented programming language like C#, Java or C++, then you know an interface is an abstract type. It only contain declarations of properties, methods and events. The implementation for the interface members is provided by a class that implements the interface.
+
+If a class that implements the interface fails to provide implementation for all the interface members, the language compiler raises an error alerting the developer that something has been missed.
+
+In general, an interface defines a contract (i.e the shape or structure of an API), that an implementing class must adhere to. Even in TypeScript we use the interface for the same purpose.
+
+We know TypeScript is a strongly typed language. This means every property we define in a TypeScript class has a type associated with it. Similarly every method parameter and return type has a type. As you know by now, TypeScript has several built-in pre-defined types like string, number, boolean etc.
+
+However, the business objects that we usually create in real-world applications like Employee, Customer, Order, Invoice etc, does not have a pre-defined type. In this case, we can use an interface to create a custom type for our business object.
+
+Let us understand this with an example. We will use the same example we worked with in Part 22 of Angular 2 tutorial.
+
+Notice the below line of code in EmployeeListComponent class. The property "employees" is defined as an array of any type.
+employees: any[];
+
+Since we do not have a Type for employee object, we specified the type as any.
+
+There are 2 problems with the above line of code
+1. For the object properties in the array we do not get intellisense
+
+2. Since we do not get intellisense, we are prone to making typographical errors and the compiler will not be able to flag them as errors. We will come to know about these errors only at runtime.
+
+Let's create a Type for employee using an interface as shown below. Add a new TypeScript file to the employee folder. Name it employee.ts. Copy and paste the following code.
+
+export interface IEmployee {
+    code: string;
+    name: string;
+    gender: string;
+    annualSalary: number;
+    dateOfBirth: string;
+}
+
+With this IEmployee interface in place, we can now import and use the interface type as the type for "employees" property. The code in EmployeeListComponent class is shown below.
+
+import { IEmployee } from './employee';
+
+export class EmployeeListComponent {
+    employees: IEmployee[];
+}
+
+Since we have specified a type for the "employees" property, we now get intellisense for the object properties in the array
+
+As you can see from the image below, if we make any typographical errors with the property names, we will get to know these errors right away at compile time.
+
+Interfaces in TypeScript:
+
+1. Use interface keyword to create an interface
+2. It is common to prefix the interface name with capital letter I. However, some interfaces in Angular does not have the prefix I. For example, OnInit interface
+3. Interface members are public by default and does not require explicit access modifiers. It is a compile time error to include an explicit access modifier. You will see an error message like - public modifier cannot appear on a type member.
+4. A class that implements an interface must provide implementation for all the interface members unless the members are marked as optional using the ? operator
+5. Use the implements keyword to make a class implement an interface
+6. TypeScript interfaces exist for developer convenience and are not used by Angular at runtime. During transpilation, no JavaScript code is generated for an interface. It is only used by Typescript for type checking during development.
+7. To reduce the amount of code you have to write, consider using short-hand syntax to initialise class properties with constructor parameters
+
+12Q) lazy loading
+
+Application performance is an important part of web development. We always want our users to have the quickest and most performant experience when they visit our apps.
+
+Lazy loading is one of the features we can add to our app to improve performance. What exactly is lazy loading?
+
+Lazy loading is the act of only loading parts of our app when they are needed.
+
+The benefits are:
+
+1. Keep the initial payload small
+2. Smaller payloads lead to faster download speeds
+3. Lower resource costs especially on mobile networks
+4. A user doesn't visit a section of our app, they won't ever download those resources
+
+const routes: Routes = [
+  {
+    path: 'dashboard',
+    loadChildren: 'app/dashboard/dashboard.module#DashboardModule',
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
